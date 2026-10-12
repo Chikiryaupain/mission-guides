@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Веб-дизайн и бизнес: методичка</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+.eyebrow,.corner,.tag,.qmeta,.hint{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:34ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);border:1px solid var(--stroke);background:var(--card);border-radius:6px;padding:7px 10px}
+.chips span.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-top:10px}
+nav a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 12px 14px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.2;display:flex;flex-direction:column;gap:22px;min-height:104px;justify-content:space-between;cursor:pointer}
+nav a::before{content:attr(data-n);font-family:var(--mono);font-size:12px;color:var(--dim);background:#262626;border-radius:6px;padding:5px 7px;align-self:flex-start}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);outline:none}
+button{font:500 15px var(--body);cursor:pointer}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn-main{background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:11px 16px}
+
+/* воронка */
+.funnel{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:center}
+.funnel svg{width:100%;height:auto;display:block}
+.funnel .ring{cursor:pointer}
+.funnel .ring path,.funnel .bowl path{fill:#141414;stroke:#4a4a48;stroke-width:1;transition:fill .2s,stroke .2s,transform .3s}
+.funnel .ring text,.funnel .bowl text{font-family:var(--mono);font-size:11px;letter-spacing:.06em;fill:var(--dim);text-transform:uppercase;pointer-events:none}
+.funnel .ring.on path{fill:var(--accent);stroke:var(--accent)}
+.funnel .ring.on text{fill:var(--accent-ink)}
+.funnel .bowl.on path{stroke:var(--accent);fill:#1d1612}
+.funnel .bowl.on text{fill:var(--accent)}
+.funnel .bowl{cursor:pointer}
+.fpanel{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-height:250px}
+.fpanel .n{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.fpanel h3{font-size:clamp(24px,3vw,32px)}
+.fpanel .on-site{border-left:2px solid var(--accent);padding-left:10px;color:var(--ink);font-size:15px}
+.fpanel .on-site i{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:2px}
+.fdots{display:flex;gap:6px}
+.fdots button{width:26px;height:6px;border-radius:6px;border:0;background:var(--stroke);padding:0}
+.fdots button[aria-current="true"]{background:var(--accent)}
+
+/* списки */
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px}
+ul.marks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+ul.marks li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);color:var(--ink)}
+ul.marks li::before{content:"";width:7px;height:7px;background:var(--faint);margin-top:9px}
+
+/* запомни */
+.mem{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mem .card{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.mem .card i,.logic .card i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--accent)}
+.mem .card b{font-family:var(--display);font-weight:400;font-size:20px;line-height:1.15;letter-spacing:-.01em}
+.mem .card span{font-size:15px;line-height:1.4}
+.logic{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.logic .card{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0;min-height:118px;position:relative}
+.logic .card b{font-weight:400;font-size:18px;line-height:1.15}
+.logic .card span{font-size:13px;line-height:1.3}
+.logic .card.end{background:var(--accent);border-color:var(--accent)}
+.logic .card.end *{color:var(--accent-ink)}
+
+/* плохо / хорошо */
+.pairs{display:flex;flex-direction:column;gap:10px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pair .tag{font-family:var(--display);font-size:22px;letter-spacing:-.01em;text-transform:none;display:flex;align-items:center;gap:10px}
+.pair .tag::before{content:"";width:22px;height:22px;border-radius:50%;flex:none;background-repeat:no-repeat;background-position:center}
+.bad .tag{color:var(--bad)} .good .tag{color:var(--good)}
+.bad .tag::before{background-color:var(--bad);background-image:linear-gradient(45deg,transparent 45%,#fff 45%,#fff 55%,transparent 55%),linear-gradient(-45deg,transparent 45%,#fff 45%,#fff 55%,transparent 55%);background-size:10px 10px}
+.good .tag::before{background-color:var(--good);background-image:linear-gradient(#fff,#fff);background-size:8px 8px;border-radius:50%}
+.q{color:var(--ink);font-size:17px;line-height:1.35}
+.why{font-size:15px;border-left:1px solid var(--faint);padding:2px 0 2px 12px;margin:0 0 14px 4px}
+.why:last-child{margin-bottom:0}
+
+/* шаги */
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start;color:var(--ink);font-size:18px;line-height:1.35}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+
+/* нейросеть */
+.ai{border:1px solid var(--accent);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px;background:#14100e}
+.ai .eyebrow{color:var(--accent)}
+.ai ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.ai li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;color:var(--ink)}
+.ai li::before{content:"";width:7px;height:7px;background:var(--accent);margin-top:9px}
+
+/* тест */
+.quiz{display:flex;flex-direction:column;gap:16px;min-height:520px}
+.qbar{height:3px;background:var(--stroke);border-radius:3px;overflow:hidden}
+.qbar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.qtext{font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.12;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;font:400 17px/1.3 var(--body);display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start}
+.opt::before{content:attr(data-k);font-family:var(--mono);font-size:12px;color:var(--dim);padding-top:2px}
+.opt:hover:not([disabled]){border-color:var(--faint)}
+.opt.is-wrong{border-color:var(--bad)}
+.opt.is-right{border-color:var(--good)}
+.opt[disabled]{cursor:default;opacity:.55}
+.opt.is-right[disabled],.opt.is-wrong[disabled]{opacity:1}
+.fb{border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;border:1px solid var(--stroke);background:var(--card)}
+.fb b{font-weight:400;font-size:19px}
+.fb.ok b{color:var(--good)} .fb.no b{color:var(--bad)}
+.fb span{color:var(--ink)}
+.qfoot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.score{font-family:var(--display);font-size:clamp(44px,8vw,88px);line-height:.95;color:var(--ink);letter-spacing:-.03em}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:760px){
+  header,section{padding:18px 16px 24px}
+  .funnel,.mem,.pair{grid-template-columns:minmax(0,1fr)}
+  .logic{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){.qbar i,.funnel path{transition:none}}
+
+/* встраивание в урок: страница рисуется шириной 900px и масштабируется под ширину фрейма */
+:root.embed-root{color-scheme:normal;background:transparent}
+body.embed{background:transparent;padding:0}
+body.fit{width:900px;transform-origin:0 0;overflow:hidden}
+html.fit-root{overflow:hidden}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+MISSION TO WEB</span><span>БЛОК «ВЕБ-ДИЗАЙН»
+МЕТОДИЧКА К УРОКУ</span></div>
+  <h1>Веб-дизайн и бизнес</h1>
+  <p class="lead"><b>Сайт — инструмент бизнеса, а не витрина.</b> После урока ты понимаешь, какие задачи он решает, где стоит в воронке продаж и что такое целевое действие.</p>
+  <div class="chips"><span class="on">Урок · 15 минут</span><span>Квиз · 10 вопросов</span></div>
+  <nav aria-label="Разделы">
+    <a data-go="shema" data-n="01">Схема урока</a>
+    <a data-go="proshli" data-n="02">Что прошли</a>
+    <a data-go="zapomni" data-n="03">Запомни</a>
+    <a data-go="logika" data-n="04">Логика продающей страницы</a>
+    <a data-go="pary" data-n="05">Как надо и как не надо</a>
+    <a data-go="primenit" data-n="06">Как применить в проекте</a>
+    <a data-go="ai" data-n="07">С нейросетью</a>
+    <a data-go="test" data-n="08">Проверь себя</a>
+  </nav>
+</header>
+
+<section id="s-shema">
+  <div class="corner"><span>PERASPERADASTRA
+MISSION TO WEB</span><span>01 / СХЕМА УРОКА</span></div>
+  <h2>Воронка: от интереса к действию</h2>
+  <p>Покупка — не первый шаг. Человек проходит путь, и сайт должен вести его по всем этапам. Выбери кольцо, чтобы увидеть, что на этом этапе делает сайт.</p>
+  <div class="funnel">
+    <svg viewBox="0 0 420 400" role="group" aria-label="Воронка из четырёх колец над чашей" id="fsvg"></svg>
+    <div class="fpanel" id="fpanel" aria-live="polite"></div>
+  </div>
+  <div class="hint">Кольца — этапы пути, чаша — целевое действие</div>
+</section>
+
+<section id="s-proshli">
+  <div class="corner"><span>PERASPERADASTRA
+MISSION TO WEB</span><span>02 / ЧТО ПРОШЛИ</span></div>
+  <h2>Что прошли</h2>
+  <ul class="marks">
+    <li>Что такое веб-дизайн: UX, UI и коммуникация</li>
+    <li>Задачи сайта: объяснить, впечатлить, доказать ценность, снять риск, привести к действию</li>
+    <li>Целевое действие и лид-магнит</li>
+    <li>Функции сайтов: информационная, коммуникационная, продающая, имиджевая</li>
+    <li>Как устроен бизнес: рынок, аудитория, продукт, маркетинг, продажи</li>
+    <li>Воронка продаж, лестница осведомлённости, B2C и B2B</li>
+  </ul>
+</section>
+
+<section id="s-zapomni">
+  <div class="corner"><span>PERASPERADASTRA
+MISSION TO WEB</span><span>03 / ЗАПОМНИ</span></div>
+  <h2>Запомни</h2>
+  <div class="mem">
+    <div class="card"><i>01</i><b>Дизайн — это инструмент</b><span>Он формирует доверие, объясняет ценность и ведёт к нужному действию. Красота без этого не приносит результата.</span></div>
+    <div class="card"><i>02</i><b>Тест 5 секунд</b><span>Покажи первый экран на 5–7 секунд. Человек должен сказать, что это, для кого и какое ощущение осталось.</span></div>
+    <div class="card"><i>03</i><b>Целевое действие измеримо</b><span>«Увеличить продажи» — цель бизнеса. «Оставил заявку», «начал пробный период», «оплатил» — то, что можно посчитать.</span></div>
+    <div class="card"><i>04</i><b>Покупка — не первый шаг</b><span>Путь: интерес → знакомство → доверие → решение → покупка. Поэтому часто нужен промежуточный шаг: консультация, пробный урок, лид-магнит.</span></div>
+    <div class="card"><i>05</i><b>Аудитория — не «все»</b><span>Это сегменты с разными задачами. Покупатель и пользователь могут быть разными людьми: HR покупает сервис, сотрудники им пользуются.</span></div>
+    <div class="card"><i>06</i><b>B2C и B2B говорят по-разному</b><span>B2C — эмоция, простота, ощущение выгоды. B2B — структура, факты, кейсы, цифры.</span></div>
+    <div class="card"><i>07</i><b>Сайт работает для всех уровней готовности</b><span>Объяснить тому, кто только разбирается, убедить сомневающегося и дать быстро купить тому, кто уже готов.</span></div>
+  </div>
+</section>
+
+<section id="s-logika">
+  <div class="corner"><span>PERASPERADASTRA
+MISSION TO WEB</span><span>04 / ЛОГИКА СТРАНИЦЫ</span></div>
+  <h2>Логика продающей страницы</h2>
+  <p>Семь смысловых шагов, в этом порядке. Каждый отвечает на вопрос, который возникает у человека на этом месте страницы.</p>
+  <div class="logic">
+    <div class="card"><i>01</i><b>Контекст</b><span>Куда я попал и про что это</span></div>
+    <div class="card"><i>02</i><b>Проблема</b><span>Узнаваемая ситуация пользователя</span></div>
+    <div class="card"><i>03</i><b>Решение</b><span>Что предлагает продукт</span></div>
+    <div class="card"><i>04</i><b>Преимущества</b><span>Чем лучше альтернатив</span></div>
+    <div class="card"><i>05</i><b>Доказательства</b><span>Кейсы, отзывы, клиенты, цифры</span></div>
+    <div class="card"><i>06</i><b>Предложение</b><span>Условия: что входит, сроки, формат</span></div>
+    <div class="card end"><i>07</i><b>Действие</b><span>Один понятный следующий шаг</span></div>
+  </div>
+</section>
+
+<section id="s-pary">
+  <div class="corner"><span>PERASPERADASTRA
+MISSION TO WEB</span><span>05 / КАК НАДО И КАК НЕ НАДО</span></div>
+  <h2>Как надо и как не надо</h2>
+  <div class="pairs">
+    <div class="pair">
+      <div class="bad"><span class="tag">Плохо</span><div class="q">Кнопка «Отправить», а рядом ещё три одинаково яркие кнопки.</div></div>
+      <div class="good"><span class="tag">Хорошо</span><div class="q">Один главный CTA, где текст говорит о результате: «Получить расчёт», «Начать пробный период».</div></div>
+    </div>
+    <p class="why">Человек сразу видит, что делать и что он получит.</p>
+    <div class="pair">
+      <div class="bad"><span class="tag">Плохо</span><div class="q">Сразу «Купить» для человека, который впервые видит бренд.</div></div>
+      <div class="good"><span class="tag">Хорошо</span><div class="q">Промежуточное действие: бесплатный урок, как у Skyeng, или тест-драйв, как у Cowboy.</div></div>
+    </div>
+    <p class="why">Большинство не доверяют компании с первого визита и не готовы платить сразу.</p>
+    <div class="pair">
+      <div class="bad"><span class="tag">Плохо</span><div class="q">«Наша аудитория — женщины 25–40 с высоким доходом».</div></div>
+      <div class="good"><span class="tag">Хорошо</span><div class="q">Портрет: потребность, опыт её решения, сомнения.</div></div>
+    </div>
+    <p class="why">Демография почти ничего не говорит о том, что человеку показать и чем убедить.</p>
+  </div>
+</section>
+
+<section id="s-primenit">
+  <div class="corner"><span>PERASPERADASTRA
+MISSION TO WEB</span><span>06 / КАК ПРИМЕНИТЬ В ПРОЕКТЕ</span></div>
+  <h2>Как применить в проекте</h2>
+  <ol class="steps">
+    <li>Сформулируй одной фразой: кто компания, что делает, для кого и какой результат даёт.</li>
+    <li>Определи главное целевое действие сайта и промежуточный шаг для тех, кто ещё не готов.</li>
+    <li>Опиши 2–3 сегмента аудитории: потребность, опыт её решения, сомнения.</li>
+    <li>Определи, B2C это или B2B, и выбери тон: эмоция и простота или структура и факты.</li>
+    <li>Разложи будущую страницу по логике «контекст → проблема → решение → преимущества → доказательства → предложение → действие».</li>
+    <li>Проверь первый экран тестом 5 секунд на знакомом человеке.</li>
+  </ol>
+</section>
+
+<section id="s-ai">
+  <div class="corner"><span>PERASPERADASTRA
+MISSION TO WEB</span><span>07 / С НЕЙРОСЕТЬЮ</span></div>
+  <h2>С нейросетью</h2>
+  <div class="ai">
+    <span class="eyebrow">Что отдать нейросети и что оставить себе</span>
+    <ul>
+      <li>Отдай нейросети описание продукта и попроси 3–4 сегмента аудитории с потребностями и сомнениями. Это гипотезы: сверь их с брифом и реальными людьми.</li>
+      <li>Попроси варианты промежуточного целевого действия и лид-магнитов для твоей ниши. Оставь только то, что бизнес реально может дать.</li>
+      <li>Вставь текст первого экрана и попроси ответить как случайный посетитель: что это, для кого, какой результат. Если ответ мимо — переписывай текст.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s-test">
+  <div class="corner"><span>PERASPERADASTRA
+MISSION TO WEB</span><span>08 / ПРОВЕРЬ СЕБЯ</span></div>
+  <h2>Проверь себя</h2>
+  <p>10 вопросов. После каждого ответа будет объяснение. Ошибиться можно: вариант останется подсвеченным, а ты выберешь другой.</p>
+  <div class="quiz" id="quiz" aria-live="polite"></div>
+</section>
+
+<footer>Per Aspera Ad Astra · Mission to Web · Веб-дизайн и бизнес</footer>
+</div>
+
+<script>
+(function(){
+var q=location.search;
+if(/embed|fit/.test(q)){document.documentElement.className='embed-root';document.body.classList.add('embed')}
+var FIT=/fit/.test(q);
+
+/* типографика: неразрывные пробелы после коротких слов и перед тире */
+function typo(root){
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,list=[];
+  while(n=w.nextNode())list.push(n);
+  list.forEach(function(t){
+    if(t.parentNode&&/^(SCRIPT|STYLE|text)$/i.test(t.parentNode.nodeName))return;
+    t.nodeValue=t.nodeValue
+      .replace(/(^|[\s(«])([А-Яа-яЁёA-Za-z]{1,2}) /g,'$1$2 ')
+      .replace(/(^|[\s(«])([А-Яа-яЁёA-Za-z]{1,2}) /g,'$1$2 ')
+      .replace(/ — /g,' — ');
+  });
+}
+
+/* переходы по разделам без хеша: работает и внутри фрейма урока */
+document.querySelectorAll('nav a[data-go]').forEach(function(a){
+  a.setAttribute('role','link');a.tabIndex=0;
+  function go(){var s=document.getElementById('s-'+a.getAttribute('data-go'));if(!s)return;
+    if(FIT){/* во фрейме урока страница не скроллится сама: скроллим родителя, если можно */
+      try{var f=window.frameElement;if(f){var r=f.getBoundingClientRect(),k=r.width/900;window.parent.scrollTo({top:window.parent.scrollY+r.top+s.offsetTop*k-16,behavior:'smooth'});return}}catch(e){}
+    }
+    s.scrollIntoView({behavior:'smooth',block:'start'})}
+  a.addEventListener('click',go);
+  a.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+});
+
+/* воронка */
+var STAGES=[
+  {name:'Интерес',what:'Человек заметил продукт: увидел рекламу, пост, ссылку от знакомого. Он ещё ничего не знает и решает, остаться ли на странице.',site:'Первый экран за 5 секунд объясняет, что это, для кого и какой результат.'},
+  {name:'Знакомство',what:'Человек разбирается, про что продукт и подходит ли он под его ситуацию.',site:'Контекст и проблема: узнаваемая ситуация, понятное решение, преимущества перед альтернативами.'},
+  {name:'Доверие',what:'Человек сомневается: компании с первого визита почти никто не верит.',site:'Доказательства: кейсы, отзывы, клиенты, цифры. Для B2B — структура и факты.'},
+  {name:'Решение',what:'Человек почти готов, но платить сразу страшно.',site:'Предложение с понятными условиями и промежуточный шаг: консультация, пробный урок, лид-магнит.'}
+];
+var GOAL={name:'Целевое действие',what:'То, что человек делает на сайте и что можно посчитать: оставил заявку, начал пробный период, оплатил.',site:'Один главный CTA с текстом о результате: «Получить расчёт», «Начать пробный период».'};
+var svg=document.getElementById('fsvg'),panel=document.getElementById('fpanel'),NS='http://www.w3.org/2000/svg',cur=0;
+function ell(cx,cy,rx,ry){return 'M'+(cx-rx)+' '+cy+'a'+rx+' '+ry+' 0 1 0 '+(2*rx)+' 0a'+rx+' '+ry+' 0 1 0 '+(-2*rx)+' 0'}
+function ringPath(cy,r1,r2,h){var t=12;return 'M'+(210-r1)+' '+cy+' L'+(210-r2)+' '+(cy+h)+' A'+r2+' '+(r2*.28)+' 0 0 0 '+(210+r2)+' '+(cy+h)+' L'+(210+r1)+' '+cy+' A'+r1+' '+(r1*.28)+' 0 0 0 '+(210-r1)+' '+cy+' Z'}
+var geo=[[40,180,140,58],[108,140,104,52],[170,104,74,46],[226,74,50,40]];
+var nodes=[];
+// чаша
+var bowl=document.createElementNS(NS,'g');bowl.setAttribute('class','bowl');bowl.setAttribute('tabindex','0');bowl.setAttribute('role','button');bowl.setAttribute('aria-label',GOAL.name);
+var bp=document.createElementNS(NS,'path');bp.setAttribute('d','M90 318 L330 318 Q350 318 344 336 L330 366 Q326 376 312 376 L108 376 Q94 376 90 366 L76 336 Q70 318 90 318 Z');bowl.appendChild(bp);
+var bt=document.createElementNS(NS,'text');bt.setAttribute('x','210');bt.setAttribute('y','352');bt.setAttribute('text-anchor','middle');bt.textContent='Целевое действие';bowl.appendChild(bt);
+svg.appendChild(bowl);
+for(var i=geo.length-1;i>=0;i--){(function(i){
+  var g=geo[i],grp=document.createElementNS(NS,'g');grp.setAttribute('class','ring');grp.setAttribute('tabindex','0');grp.setAttribute('role','button');grp.setAttribute('aria-label',STAGES[i].name);
+  var p=document.createElementNS(NS,'path');p.setAttribute('d',ringPath(g[0],g[1],g[2],g[3]));grp.appendChild(p);
+  var top=document.createElementNS(NS,'path');top.setAttribute('d',ell(210,g[0],g[1],g[1]*.28));top.setAttribute('style','fill:none');grp.appendChild(top);
+  var t=document.createElementNS(NS,'text');t.setAttribute('x','210');t.setAttribute('y',String(g[0]+g[3]*.62+4));t.setAttribute('text-anchor','middle');t.textContent=(i+1)+' · '+STAGES[i].name;grp.appendChild(t);
+  svg.appendChild(grp);nodes[i]=grp;
+})(i)}
+nodes[4]=bowl;
+function pick(k){cur=k;var s=k<4?STAGES[k]:GOAL;
+  nodes.forEach(function(n,j){n.classList.toggle('on',j===k);
+    var lift=(k<4&&j<k)?-10:0; n.style.transform='translateY('+lift+'px)'; n.style.transition='transform .3s'});
+  panel.innerHTML='<span class="n">'+(k<4?'Этап '+(k+1)+' из 4':'Чаша')+'</span><h3>'+s.name+'</h3><p>'+s.what+'</p><div class="on-site"><i>Что делает сайт</i>'+s.site+'</div><div class="fdots"></div>';
+  var d=panel.querySelector('.fdots');for(var j=0;j<5;j++){(function(j){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label',j<4?STAGES[j].name:GOAL.name);b.setAttribute('aria-current',j===k?'true':'false');b.addEventListener('click',function(){pick(j)});d.appendChild(b)})(j)}
+  typo(panel);
+}
+nodes.forEach(function(n,j){n.addEventListener('mouseenter',function(){pick(j)});n.addEventListener('click',function(){pick(j)});n.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(j)}})});
+pick(0);
+
+/* тест */
+var Q=[
+ {q:'Что из этого — целевое действие?',o:['Повысить узнаваемость бренда','Пользователь оставил заявку на консультацию','Сделать сайт современным'],a:1,e:'Это конкретное действие, которое можно посчитать.'},
+ {q:'Зачем Skyeng предлагает бесплатный пробный урок?',o:['Чтобы украсить сайт','Это промежуточный шаг: снимает недоверие и приводит человека в воронку','Чтобы вообще не продавать курсы'],a:1,e:'Человеку проще сделать небольшой шаг, чем сразу платить.'},
+ {q:'Что важнее на сайте для B2B-аудитории?',o:['Минимум текста и много эмоций','Структура, факты, кейсы и цифры','Анимации на каждом экране'],a:1,e:'В B2B нужно доказать компетенцию и надёжность.'},
+ {q:'«Увеличить продажи» — это…',o:['Цель бизнеса','Целевое действие на сайте','Лид-магнит'],a:0,e:'Целевое действие — то, что человек делает на сайте и что можно посчитать: заявка, пробный период, оплата.'},
+ {q:'Что такое лид-магнит?',o:['Баннер со скидкой на первом экране','Полезная вещь бесплатно в обмен на контакт','Всплывающее окно с подпиской на новости'],a:1,e:'Гайд, урок или расчёт за контакт: человек делает небольшой шаг и входит в воронку.'},
+ {q:'Когда первый экран прошёл тест 5 секунд?',o:['Человеку понравились цвета и шрифт','Человек долистал страницу до конца','За 5–7 секунд человек сказал, что это, для кого и какой результат'],a:2,e:'Тест проверяет смысл, а не красоту: первый экран должен объяснить продукт сразу.'},
+ {q:'Почему «женщины 25–40 с высоким доходом» — слабое описание аудитории?',o:['Демография не говорит, что показать человеку и чем его убедить','Слишком узкий возраст','Не указан город'],a:0,e:'Нужен портрет: потребность, опыт её решения и сомнения.'},
+ {q:'Сервис для HR: кто покупатель, а кто пользователь?',o:['Покупают и пользуются одни и те же люди','Покупает HR, пользуются сотрудники','Для сайта это неважно'],a:1,e:'Покупатель и пользователь могут быть разными людьми, и сайт говорит с обоими.'},
+ {q:'Что идёт сразу после «Решения» в логике продающей страницы?',o:['Действие','Контекст','Преимущества'],a:2,e:'Порядок: контекст → проблема → решение → преимущества → доказательства → предложение → действие.'},
+ {q:'Что не так с кнопкой «Отправить», рядом с которой ещё три одинаково яркие кнопки?',o:['Нет одного главного действия, и человек не понимает, куда нажать','Кнопок слишком мало','Всё в порядке: больше выбора'],a:0,e:'Один главный CTA с текстом о результате: человек сразу видит, что делать и что получит.'}
+];
+var root=document.getElementById('quiz'),i=0,firstTry=0,tried=false,K=['А','Б','В','Г'];
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function render(){
+  root.innerHTML='';tried=false;
+  if(i>=Q.length)return finish();
+  var it=Q[i],bar=el('div','qbar'),fill=el('i');fill.style.width=(i/Q.length*100)+'%';bar.appendChild(fill);root.appendChild(bar);
+  root.appendChild(el('div','qmeta','Вопрос '+(i+1)+' из '+Q.length));
+  root.appendChild(el('div','qtext',it.q));
+  var opts=el('div','opts'),fb=el('div'),foot=el('div','qfoot');
+  it.o.forEach(function(t,k){var b=el('button','opt',t);b.type='button';b.setAttribute('data-k',K[k]);
+    b.addEventListener('click',function(){
+      if(k===it.a){
+        if(!tried)firstTry++;
+        b.classList.add('is-right');[].forEach.call(opts.children,function(x){x.disabled=true});
+        fb.className='fb ok';fb.innerHTML='';fb.appendChild(el('b',null,'Верно'));fb.appendChild(el('span',null,it.e));
+        foot.innerHTML='';foot.appendChild(el('span','qmeta',tried?'Со второй попытки':'С первой попытки'));
+        var nx=el('button','btn-main',i===Q.length-1?'Посмотреть результат':'Следующий вопрос');nx.type='button';
+        nx.addEventListener('click',function(){i++;render()});foot.appendChild(nx);nx.focus({preventScroll:true});
+      }else{
+        tried=true;b.classList.add('is-wrong');b.disabled=true;
+        fb.className='fb no';fb.innerHTML='';fb.appendChild(el('b',null,'Не совсем'));fb.appendChild(el('span',null,'Попробуй другой вариант.'));
+      }
+      typo(root);
+    });opts.appendChild(b)});
+  root.appendChild(opts);root.appendChild(fb);root.appendChild(foot);typo(root);
+}
+function finish(){
+  var bar=el('div','qbar'),fill=el('i');fill.style.width='100%';bar.appendChild(fill);root.appendChild(bar);
+  root.appendChild(el('div','qmeta','Результат'));root.appendChild(el('div','score',firstTry+' из '+Q.length));
+  var msg=firstTry===Q.length?'Все ответы с первой попытки. Можно переходить к следующему уроку.':firstTry>=Q.length-2?'Почти всё с первой попытки. Перечитай «Запомни» и логику продающей страницы.':'Часть ответов получилась не сразу. Вернись к разделам «Запомни» и «Как надо и как не надо», потом пройди тест ещё раз.';
+  root.appendChild(el('p',null,msg));
+  var foot=el('div','qfoot'),again=el('button','btn-ghost','Пройти ещё раз');again.type='button';
+  again.addEventListener('click',function(){i=0;firstTry=0;render()});foot.appendChild(again);root.appendChild(foot);typo(root);
+}
+render();
+typo(document.getElementById('app'));
+
+/* режим fit: страница шириной 900px масштабируется под ширину фрейма, высота фрейма задаётся снаружи через aspect-ratio */
+if(FIT){
+  document.documentElement.classList.add('fit-root');document.body.classList.add('fit');
+  function lay(){var w=document.documentElement.clientWidth||innerWidth;if(w<600){document.body.classList.remove('fit');document.documentElement.classList.remove('fit-root');document.body.style.transform='';return}
+    document.body.classList.add('fit');document.documentElement.classList.add('fit-root');document.body.style.transform='scale('+(w/900)+')'}
+  lay();addEventListener('resize',lay);
+}
+})();
+</script>
+</body>
+</html>
