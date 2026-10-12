@@ -134,10 +134,16 @@ ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mo
 footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
 
 @media (max-width:760px){
-  header,section{padding:18px 16px 24px}
-  .funnel,.mem,.pair{grid-template-columns:minmax(0,1fr)}
-  .logic{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body:not(.fit) header,body:not(.fit) section{padding:18px 16px 24px}
+  body:not(.fit) .funnel,body:not(.fit) .mem,body:not(.fit) .pair{grid-template-columns:minmax(0,1fr)}
+  body:not(.fit) .logic{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+/* в режиме fit страница всегда 900px: фиксируем размеры, которые иначе зависят от ширины фрейма */
+body.fit h1{font-size:66.6px}
+body.fit h2{font-size:41.4px}
+body.fit .lead{font-size:21.6px}
+body.fit .qtext,body.fit .fpanel h3{font-size:27px}
+body.fit .score{font-size:72px}
 @media (prefers-reduced-motion:reduce){.qbar i,.funnel path{transition:none}}
 
 /* встраивание в урок: страница рисуется шириной 900px и масштабируется под ширину фрейма */
